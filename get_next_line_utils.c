@@ -11,11 +11,20 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlen(const char *str);
-void	*ft_bzero(void *ptr, size_t len);
-void	*ft_calloc(size_t num, size_t size);
-int		ft_nstrchr(const char *s, int c);
+/*FT_STRLEN
+ * @def Calculates the length of a string (number of characters before '\0').
+ *
+ * @param
+ *      {string} *str - string whose length is to be calculated.
+ *
+ * @returns {number}
+ *      OK - Length of the string as size_t.
+ *      KO - Undefined if str is NULL (no control implemented).
+ *
+ * @dev
+ *      Iterates character by character until reaching the null terminator '\0'.
+ *      Counts the number of iterations and returns it as the length.
+ * */
 
 size_t	ft_strlen(const char *str)
 {
@@ -27,6 +36,21 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
+/*FT_BZERO
+ * @def Sets a block of memory to zero.
+ *
+ * @param
+ *      {pointer} *ptr - pointer to the memory block to be cleared.
+ *      {number} len - number of bytes to set to zero.
+ *
+ * @returns {pointer}
+ *      OK - Returns the same pointer received, now zeroed.
+ *      KO - Undefined if ptr is NULL (no control implemented).
+ *
+ * @dev
+ *      Iterates over each byte of the memory block and assigns 0.
+ *      Useful for initializing memory to a clean state.
+ * */
 void	*ft_bzero(void *ptr, size_t len)
 {
 	unsigned char	*aux_ptr;
@@ -43,6 +67,22 @@ void	*ft_bzero(void *ptr, size_t len)
 	return (ptr);
 }
 
+/*FT_CALLOC
+ * @def Allocates memory for an array of elements and initializes it to zero.
+ *
+ * @param
+ *      {number} num - number of elements to allocate.
+ *      {number} size - size of each element in bytes.
+ *
+ * @returns {pointer}
+ *      OK - Pointer to the allocated and zero-initialized memory.
+ *      KO - NULL if allocation fails or if overflow is detected.
+ *
+ * @dev
+ *      Checks for multiplication overflow between num and size.
+ *      Uses malloc to allocate the required memory.
+ *      Calls ft_bzero to initialize the allocated memory to zero.
+ * */
 void	*ft_calloc(size_t num, size_t size)
 {
 	void	*ptr;

@@ -20,6 +20,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <stdint.h>
+# include <limits.h>
 
 size_t			ft_strlen(const char *str);
 void			*ft_bzero(void *ptr, size_t len);
@@ -29,7 +31,7 @@ int				ft_nstrchr(const char *s, int c);
 void			*ft_recalloc(unsigned char *old_ptr, size_t new_size);
 unsigned char	*ft_get_line(unsigned char **ptr1);
 int				ft_read_concat(unsigned char **des, int fd);
-char			*ft_return_last(unsigned char **rest);
+unsigned char	*ft_return_last(unsigned char **rest);
 char			*get_next_line(int fd);
 
 #endif

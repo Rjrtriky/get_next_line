@@ -12,12 +12,6 @@
 
 #include "get_next_line.h"
 
-void			*ft_recalloc(unsigned char *old_ptr, size_t new_size);
-unsigned char	*ft_get_line(unsigned char **ptr1);
-int				ft_read_concat(unsigned char **des, int fd);
-char			*ft_return_last(unsigned char **rest);
-char			*get_next_line(int fd);
-
 /*FT_RECALLOC
  * @def	Resize a received pointer variable with the size also received
  *
@@ -86,11 +80,11 @@ unsigned char	*ft_get_line(unsigned char **ptr)
 	if (!ptr || !*ptr)
 		return (NULL);
 	found = ft_nstrchr((char *)*ptr, '\n');
-	line = ft_calloc(found + 2, 1);
+	line = ft_calloc(found + 2, sizeof(unsigned char));
 	if (line == NULL)
 		return (NULL);
 	i = -1;
-	while (++i < (int) found)
+	while (++i <= (int) found)
 		line[i] = (*ptr)[i];
 	line[i] = '\0';
 	aux_len = ft_strlen((char *)*ptr);
@@ -134,11 +128,11 @@ int	ft_read_concat(unsigned char **des, int fd)
 		return (buffer_len);
 	buffer[buffer_len] = '\0';
 	des_len = ft_strlen((char *) *des);
-	*des = ft_recalloc(*des, (des_len + (size_t)buffer_len + 1));
+	*des = ft_recalloc(*des, (des_len + (size_t)buffer_len + 2));
 	if (*des == NULL)
 		return (-1);
 	i = -1;
-	while (++i < buffer_len)
+	while (++i <= buffer_len)
 		(*des)[des_len + i] = buffer[i];
 	(*des)[des_len + buffer_len] = '\0';
 	return ((int)des_len + (int)buffer_len + 1);
@@ -161,12 +155,12 @@ int	ft_read_concat(unsigned char **des, int fd)
  *      line. Otherwise, the memory is freed and NULL is returned. In both
  *      cases, the pointer *rest is set to NULL to avoid dangling references.
  * */
-char	*ft_return_last(unsigned char **rest)
+unsigned char	*ft_return_last(unsigned char **rest)
 {
-	char	*line;
+	unsigned char	*line;
 
 	if (**rest != '\0')
-		line = (char *)(*rest);
+		line = (*rest);
 	else
 	{
 		free(*rest);

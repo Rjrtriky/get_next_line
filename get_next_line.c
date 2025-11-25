@@ -26,11 +26,11 @@
  * @dev
  * <desarrollo de la funcion>
  * */
-void	*ft_recalloc(unsigned char *old_ptr, size_t new_size)
+void	*ft_recalloc(unsigned char *old_ptr, unsigned long int new_size)
 {
-	unsigned char	*new_ptr;
-	int				i;
-	size_t			old_size;
+	unsigned char		*new_ptr;
+	long long int		i;
+	unsigned long int	old_size;
 
 	if (new_size == 0)
 	{
@@ -43,12 +43,10 @@ void	*ft_recalloc(unsigned char *old_ptr, size_t new_size)
 	if (old_ptr != NULL)
 	{
 		old_size = ft_strlen((char *) old_ptr);
-		i = 0;
-		while ((i < (int) old_size) && (i < (int) new_size))
-		{
+		i = -1;
+		while ((++i < (long long int) old_size) && (i < (long long int)
+				new_size))
 			new_ptr[i] = old_ptr[i];
-			i++;
-		}
 	}
 	free(old_ptr);
 	old_ptr = new_ptr;
@@ -72,10 +70,10 @@ void	*ft_recalloc(unsigned char *old_ptr, size_t new_size)
  * */
 unsigned char	*ft_get_line(unsigned char **ptr)
 {
-	unsigned char	*line;
-	size_t			found;
-	size_t			aux_len;
-	int				i;
+	unsigned char		*line;
+	unsigned long int	found;
+	unsigned long int	aux_len;
+	long long int		i;
 
 	if (!ptr || !*ptr)
 		return (NULL);
@@ -112,12 +110,12 @@ unsigned char	*ft_get_line(unsigned char **ptr)
  * @dev
  * <desarrollo de la funcion>
  * */
-int	ft_read_concat(unsigned char **des, int fd)
+long long int	ft_read_concat(unsigned char **des, int fd)
 {
-	unsigned char	buffer[BUFFER_SIZE + 1];
-	size_t			buffer_len;
-	size_t			des_len;
-	size_t			i;
+	unsigned char		buffer[BUFFER_SIZE + 1];
+	unsigned long int	buffer_len;
+	unsigned long int	des_len;
+	unsigned long int	i;
 
 	if (fd < 0)
 		return (-1);
@@ -199,7 +197,7 @@ char	*get_next_line(int fd)
 {
 	static unsigned char	*rest;
 	unsigned char			*line;
-	ssize_t					rest_len;
+	long long int			rest_len;
 
 	if ((fd < 0) || (BUFFER_SIZE < 0) || (read(fd, 0, 0) < 0))
 		return (NULL);

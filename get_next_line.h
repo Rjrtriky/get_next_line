@@ -23,15 +23,16 @@
 # include <stdint.h>
 # include <limits.h>
 
-size_t			ft_strlen(const char *str);
-void			*ft_bzero(void *ptr, size_t len);
-void			*ft_calloc(size_t num, size_t size);
-int				ft_nstrchr(const char *s, int c);
+unsigned long int	ft_strlen(const char *str);
+void				*ft_bzero(void *ptr, unsigned long int len);
+void				*ft_calloc(unsigned long int num, size_t size);
+long long int		ft_nstrchr(const char *s, int c);
 
-void			*ft_recalloc(unsigned char *old_ptr, size_t new_size);
-unsigned char	*ft_get_line(unsigned char **ptr1);
-int				ft_read_concat(unsigned char **des, int fd);
-unsigned char	*ft_return_last(unsigned char **rest);
-char			*get_next_line(int fd);
+void				*ft_recalloc(unsigned char *old_ptr,
+						unsigned long int new_size);
+unsigned char		*ft_get_line(unsigned char **ptr1);
+long long int		ft_read_concat(unsigned char **des, int fd);
+unsigned char		*ft_return_last(unsigned char **rest);
+char				*get_next_line(int fd);
 
 #endif

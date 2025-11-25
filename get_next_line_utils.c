@@ -26,9 +26,9 @@
  *      Counts the number of iterations and returns it as the length.
  * */
 
-size_t	ft_strlen(const char *str)
+unsigned long int	ft_strlen(const char *str)
 {
-	int	i;
+	long	i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -51,10 +51,10 @@ size_t	ft_strlen(const char *str)
  *      Iterates over each byte of the memory block and assigns 0.
  *      Useful for initializing memory to a clean state.
  * */
-void	*ft_bzero(void *ptr, size_t len)
+void	*ft_bzero(void *ptr, unsigned long int len)
 {
-	unsigned char	*aux_ptr;
-	size_t			i;
+	unsigned char		*aux_ptr;
+	unsigned long int	i;
 
 	i = 0;
 	aux_ptr = ptr;
@@ -83,13 +83,13 @@ void	*ft_bzero(void *ptr, size_t len)
  *      Uses malloc to allocate the required memory.
  *      Calls ft_bzero to initialize the allocated memory to zero.
  * */
-void	*ft_calloc(size_t num, size_t size)
+void	*ft_calloc(unsigned long int num, size_t size)
 {
 	void	*ptr;
 
 	if ((num == 0) || (size == 0))
 		return (malloc(0));
-	if (size > 0 && num > __SIZE_MAX__ / size)
+	if (size > 0 && num > __LONG_MAX__ / size)
 		return (NULL);
 	ptr = malloc(num * size);
 	if ((ptr == NULL) || (ft_bzero(ptr, (num * size)) != ptr))
@@ -113,7 +113,7 @@ void	*ft_calloc(size_t num, size_t size)
  * @dev
  * <desarrollo de la funcion>
  * */
-int	ft_nstrchr(const char *s, int c)
+long long int	ft_nstrchr(const char *s, int c)
 {
 	size_t	i;
 

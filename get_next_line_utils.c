@@ -26,9 +26,9 @@
  *      Counts the number of iterations and returns it as the length.
  * */
 
-unsigned long int	ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-	long	i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -51,10 +51,10 @@ unsigned long int	ft_strlen(const char *str)
  *      Iterates over each byte of the memory block and assigns 0.
  *      Useful for initializing memory to a clean state.
  * */
-void	*ft_bzero(void *ptr, unsigned long int len)
+void	*ft_bzero(void *ptr, size_t len)
 {
-	unsigned char		*aux_ptr;
-	unsigned long int	i;
+	unsigned char	*aux_ptr;
+	size_t			i;
 
 	i = 0;
 	aux_ptr = ptr;
@@ -83,13 +83,13 @@ void	*ft_bzero(void *ptr, unsigned long int len)
  *      Uses malloc to allocate the required memory.
  *      Calls ft_bzero to initialize the allocated memory to zero.
  * */
-void	*ft_calloc(unsigned long int num, size_t size)
+void	*ft_calloc(size_t num, size_t size)
 {
 	void	*ptr;
 
 	if ((num == 0) || (size == 0))
 		return (malloc(0));
-	if (size > 0 && num > __LONG_MAX__ / size)
+	if (size > 0 && num > __SIZE_MAX__ / size)
 		return (NULL);
 	ptr = malloc(num * size);
 	if ((ptr == NULL) || (ft_bzero(ptr, (num * size)) != ptr))
@@ -113,7 +113,7 @@ void	*ft_calloc(unsigned long int num, size_t size)
  * @dev
  * <desarrollo de la funcion>
  * */
-long long int	ft_nstrchr(const char *s, int c)
+int	ft_nstrchr(const char *s, int c)
 {
 	size_t	i;
 
@@ -129,4 +129,44 @@ long long int	ft_nstrchr(const char *s, int c)
 	if ((char)c == '\0')
 		return (i);
 	return (-1);
+}
+
+/*FT_RECALLOC
+ * @def	Resize a received pointer variable with the size also received
+ *
+ * @param
+ *		{unsigned char} <nombre del parametro> - que reibe
+ *		{number} <nombre del parametro> - que reibe
+ *
+ * @returns {unsigned char}
+ *		OK - string with changed size.
+ *		KO - NULL
+ *
+ * @dev
+ * <desarrollo de la funcion>
+ * */
+void	*ft_recalloc(unsigned char *old_ptr, unsigned long int new_size)
+{
+	unsigned char	*new_ptr;
+	long long int	i;
+	size_t			old_size;
+
+	if (new_size == 0)
+	{
+		free(old_ptr);
+		return (NULL);
+	}
+	new_ptr = (unsigned char *) ft_calloc(new_size, 1);
+	if (new_ptr == NULL)
+		return (NULL);
+	if (old_ptr != NULL)
+	{
+		old_size = ft_strlen((char *) old_ptr);
+		i = -1;
+		while ((++i < (int) old_size) && (i < (int) new_size))
+			new_ptr[i] = old_ptr[i];
+	}
+	free(old_ptr);
+	old_ptr = new_ptr;
+	return (new_ptr);
 }

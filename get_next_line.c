@@ -1,19 +1,16 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rjuarez- <rjuarez-@student.42madrid.com>   #+#  +:+       +#+        */
+/*   By: rjuarez- <rjuarez-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-11-13 12:00:37 by rjuarez-          #+#    #+#             */
-/*   Updated: 2025-11-13 12:00:37 by rjuarez-         ###   ########.com      */
+/*   Created: 2025/12/03 02:18:26 by rjuarez-          #+#    #+#             */
+/*   Updated: 2025/12/03 02:34:23 by rjuarez-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "get_next_line.h"
-
-
-
 /*FT_GET_LINE
  * @def	It obtains a line ending in '\n' and leaves the rest in the string
  *		received as a parameter.
@@ -29,7 +26,7 @@
  * <desarrollo de la funcion>
  * 
  * */
-unsigned char	*ft_get_line(unsigned char **ptr)
+/*unsigned char	*ft_get_line(unsigned char **ptr)
 {
 	unsigned char	*line;
 	size_t			found;
@@ -55,6 +52,34 @@ unsigned char	*ft_get_line(unsigned char **ptr)
 	if (*ptr == NULL)
 		return (NULL);
 	return (line);
+}*/
+unsigned char	*ft_get_line(unsigned char **des, unsigned char **line,
+						ssize_t size, ssize_t byte_read)
+{
+	int				i;
+	long long int	len_line;
+
+	*line = ft_recalloc(*line, ft_strlen((char *)*line) + size + 1);
+	if (*line == NULL)
+	{
+		free(des);
+		free(line);
+		return (NULL);
+	}
+	len_line = ft_strlen((char *)*line);
+	i = -1;
+	while (++i < (int)size)
+		(*line)[len_line + i] = (*des)[i];
+	(*line)[len_line + i] = '\0';
+	if (size < byte_read)
+	{
+		i = -1;
+		while ((++i + size) < byte_read)
+			(*des)[i] = (*des)[size + i];
+		(*des)[i] = '\0';
+	}
+	(*des) = ft_recalloc((*des), (byte_read - size + 1));
+	return ((*line));
 }
 
 void	*ft_swaping(void **ptr1, void **ptr2)
@@ -75,7 +100,7 @@ void	*ft_swaping(void **ptr1, void **ptr2)
 	}
 	else
 	{
-		aux = (unsigned char) (*ptr1);
+		aux = (unsigned char)(*ptr1);
 		*ptr1 = *ptr2;
 		*ptr2 = (void *) aux;
 	}
@@ -124,12 +149,11 @@ void	*ft_swaping(void **ptr1, void **ptr2)
 	return ((int)des_len + (int)buffer_len + 1);
 }*/
 
-
-int	ft_read_concat(unsigned char **des, unsigned char **line, int fd)
+unsigned char	*ft_read_concat(unsigned char **des, unsigned char **line,
+					int fd)
 {
 	unsigned long int	bytes_read;
 	int					i;
-	int					len;
 
 	if (fd < 0)
 		return (-1);
@@ -144,25 +168,14 @@ int	ft_read_concat(unsigned char **des, unsigned char **line, int fd)
 		(*des)[bytes_read] = '\0';
 		if (bytes_read != 0)
 			break ;
-		*line = ft_recalloc(*line, ft_strlen((char *)*line) + bytes_read + 1);
-		if (*line == NULL)
-			return (-1);
-		i = -1;
-		while (++i < (int)bytes_read)
-			(*line)[ft_strlen((char *)*line) + i] = (*des)[i];
-		(*line)[len + i] = '\0';
+		*line = ft_get_line((*des), (*line), bytes_read, bytes_read);
 	}
-	if (ft_nstrchr((char *)des, '\n') >= 0)
-		*line = ft_recalloc(*line, ft_strlen((char *)*line)
-				+ ft_nstrchr((char *)des, '\n') + 1);
-	else
-		*line = ft_recalloc(*line, ft_strlen((char *)*line) + bytes_read + 1);
-	if (*line == NULL)
-		return (-1);
-	i = -1;
-	while (++i < (int)bytes_read)
-		(*line)[ft_strlen((char *)*line) + i] = (*des)[i];
-	(*line)[len + i] = '\0';
+	if ((ft_nstrchr((char *)des, '\n') >= 0) && ((*line) != NULL))
+		*line = ft_get_line((*des), (*line), ft_nstrchr((char *)des, '\n'),
+				bytes_read);
+	else if ((*line) != NULL)
+		*line = ft_get_line((*des), (*line), bytes_read, bytes_read);
+	return (line);
 }
 
 /*FT_RETURN_LAST
@@ -224,7 +237,7 @@ unsigned char	*ft_return_last(unsigned char **rest)
  * */
 char	*get_next_line(int fd)
 {
-	static unsigned char	*rest[BUFFER_SIZE + 1];
+	static unsigned char	*rest;
 	unsigned char			*line;
 	ssize_t					rest_len;
 
@@ -238,7 +251,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	if (rest == NULL)
-		rest = ft_calloc(BUFFER_SIZE + 1 , sizeof(unsigned char));
+		rest = ft_calloc((BUFFER_SIZE + 1), sizeof(unsigned char));
 	rest_len = 1;
 	while ((rest_len > 0) && (ft_nstrchr((char *)rest, '\n') < 0))
 		rest_len = ft_read_concat(&rest, &line, fd);

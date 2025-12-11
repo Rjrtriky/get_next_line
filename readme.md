@@ -4,19 +4,24 @@
 
 El proyecto get_next_line consiste en implementar una función en C que permite leer un archivo descriptor línea por línea.Su objetivo es profundizar en el manejo de memoria dinámica, punteros y lectura de archivos mediante la función read().
 
-### Prototipo:
-char *get_next_line(int fd);
+DEFINICION:
 
 Cada llamada devuelve la siguiente línea del archivo, incluyendo el carácter \n si existe.Cuando se alcanza el final del archivo, devuelve la última línea (aunque no termine en \n).Si ocurre un error o no hay nada más que leer, devuelve NULL.
 
-### Parametros:
+PROTOTIPO:
+
+	char *get_next_line(int fd);
+
+PARAMETROS:
+
 En C, a los ficheros se les identifica con un numero. No obstante, se reservan algunos para los ficheros estándar cuyos numeros por defecto son:
 
     -Entrada estándar:   STDIN_FILENO  0
     -Salida estándar:    STDOUT_FILENO 1
 	-Error estándar:     STDERR_FILENO 2
 
-### Retorno:
+RETORNO:
+
     -Correcto:    Puntero a la cadena con la linea leida del fichero. 
     -Incorrecto:  NULL.
 
@@ -32,41 +37,32 @@ EJECUCION
 
 Ejemplo de uso:
 
-#include <fcntl.h>
-#include <stdio.h>
-#include "get_next_line.h"
-
-int main(void)
-{
-    int fd = open("archivo.txt", O_RDONLY);
-    char *line;
-
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        printf("%s", line);
-        free(line);
-    }
-    close(fd);
-    return 0;
-}
+	#include "get_nex_line.h"
+	int main(void)
+	{
+		int fd = open("archivo.txt", O_RDONLY);
+		char *line;
+		while ((line = get_next_line(fd)) != NULL)
+    	{
+        	printf("%s", line);
+        	free(line);
+    	}
+    	close(fd);
+    	return 0;
+	}
 
 ## 📚 Recursos
 
-Referencias clásicas:
+REFERENCIAS CLASICAS:
 
--Documentación de read() en Linux con man
+	-Documentación de read() en Linux con man y en https://man7.org/linux/man-pages/man2/read.2.html
+	-Tutoriales sobre manejo de memoria dinámica en C.
+	-Ejemplos de proyectos previos de 42 relacionados con get_next_line.
 
-Tutoriales sobre manejo de memoria dinámica en C.
+USO DE IA:
 
-Ejemplos de proyectos previos de 42 relacionados con get_next_line.
-
-Uso de IA
-
-En este proyecto se ha utilizado IA para:
-
-Depuración de código: análisis de errores de referencia y seguridad en punteros.
-
-Visualización: creación de diagramas de flujo y pseudocódigo para entender el algoritmo.
+	-Seguridad en punteros.
+	-Creación de diagramas de flujo despues de la codificación.
 
 
 ## 🔄 Diagrama de flujo del algoritmo

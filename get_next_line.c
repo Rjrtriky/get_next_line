@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rjuarez- <rjuarez-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: rjuarez- <rjuarez-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 02:18:26 by rjuarez-          #+#    #+#             */
-/*   Updated: 2025/12/03 02:34:23 by rjuarez-         ###   ########.fr       */
+/*   Updated: 2025/12/11 15:08:30 by rjuarez-         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 /*FT_GET_LINE
@@ -26,33 +26,6 @@
  * <desarrollo de la funcion>
  * 
  * */
-/*unsigned char	*ft_get_line(unsigned char **ptr)
-{
-	unsigned char	*line;
-	size_t			found;
-	size_t			aux_len;
-	int				i;
-
-	if (!ptr || !*ptr)
-		return (NULL);
-	found = ft_nstrchr((char *)*ptr, '\n');
-	line = ft_calloc(found + 2, sizeof(unsigned char));
-	if (line == NULL)
-		return (NULL);
-	i = -1;
-	while (++i <= (int) found)
-		line[i] = (*ptr)[i];
-	line[i] = '\0';
-	aux_len = ft_strlen((char *)*ptr);
-	i = -1;
-	while ((int)(found + 1 + ++i) < (int) aux_len)
-		(*ptr)[i] = (*ptr)[found + 1 + i];
-	(*ptr)[i] = '\0';
-	*ptr = ft_recalloc(*ptr, i + 1);
-	if (*ptr == NULL)
-		return (NULL);
-	return (line);
-}*/
 unsigned char	*ft_get_line(unsigned char **des, unsigned char **line,
 						ssize_t size, ssize_t byte_read)
 {
@@ -82,6 +55,25 @@ unsigned char	*ft_get_line(unsigned char **des, unsigned char **line,
 	return ((*line));
 }
 
+
+/* FT_SWAPING
+ * @def Swaps the contents of two void pointers.
+ *
+ * @param
+ *      {void**} ptr1 - pointer to first void pointer.
+ *      {void**} ptr2 - pointer to second void pointer.
+ *
+ * @returns {void*}
+ *      OK - Returns 1 (as integer, cast to void*) to indicate success.
+ *      KO - Returns 0 (as integer, cast to void*) if both inputs are NULL.
+ *
+ * @dev
+ *      Handles four cases:
+ *      1. Both NULL → return 0
+ *      2. ptr1 NULL → move ptr2 to ptr1, set ptr2 to NULL
+ *      3. ptr2 NULL → move ptr1 to ptr2, set ptr1 to NULL
+ *      4. Both valid → standard swap using temporary variable
+ */
 void	*ft_swaping(void **ptr1, void **ptr2)
 {
 	unsigned char	*aux;
@@ -123,32 +115,6 @@ void	*ft_swaping(void **ptr1, void **ptr2)
  * @dev
  * <desarrollo de la funcion>
  * */
-/*int	ft_read_concat(unsigned char **des, int fd)
-{
-	unsigned char	*buffer;
-	size_t			buffer_len;
-	size_t			des_len;
-	size_t			i;
-
-	if (fd < 0)
-		return (-1);
-	if (*des == NULL)
-		*des = (unsigned char *) ft_calloc(1, 1);
-	buffer_len = (size_t) read(fd, buffer, BUFFER_SIZE);
-	if (buffer_len <= 0)
-		return (buffer_len);
-	buffer[buffer_len] = '\0';
-	des_len = ft_strlen((char *) *des);
-	*des = ft_recalloc(*des, (des_len + (size_t)buffer_len + 2));
-	if (*des == NULL)
-		return (-1);
-	i = -1;
-	while (++i <= buffer_len)
-		(*des)[des_len + i] = buffer[i];
-	(*des)[des_len + buffer_len] = '\0';
-	return ((int)des_len + (int)buffer_len + 1);
-}*/
-
 unsigned char	*ft_read_concat(unsigned char **des, unsigned char **line,
 					int fd)
 {

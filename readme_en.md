@@ -1,3 +1,4 @@
+This project was created as part of the curriculum for 42 by rjuarez-
 # 📚 get_next_line
 
 ## 📖 Description

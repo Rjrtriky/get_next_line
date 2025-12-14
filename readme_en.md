@@ -38,7 +38,7 @@ EXECUTION
 
 Example usage:
 
-    #include "get_nex_line.h"
+    #include "get_next_line.h"
     int main(void)
     {
         int fd = open("file.txt", O_RDONLY);

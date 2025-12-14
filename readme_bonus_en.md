@@ -32,7 +32,7 @@ COMPILATION
 
 The project must be compiled with the standard 42 flags:
 
-cc -Wall -Wextra -Werror get_next_line.c get_next_line_utils.c -D BUFFER_SIZE=42 -o gnl
+cc -Wall -Wextra -Werror get_next_line_bonus.c get_next_line_utils_bonus.c get_next_line_bonus.h -D BUFFER_SIZE=42 -o gnl
 
 EXECUTION
 

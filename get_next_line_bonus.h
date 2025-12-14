@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rjuarez- <rjuarez-@student.42madrid.com>   #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-11-13 12:00:34 by rjuarez-          #+#    #+#             */
-/*   Updated: 2025-11-13 12:00:34 by rjuarez-         ###   ########.com      */
+/*   Created: 2025-12-14 13:26:20 by rjuarez-          #+#    #+#             */
+/*   Updated: 2025-12-14 13:26:20 by rjuarez-         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 80

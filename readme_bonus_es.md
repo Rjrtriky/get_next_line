@@ -3,11 +3,11 @@
 
 ## 📖 Descripción
 
-El proyecto get_next_line consiste en implementar una función en C que permite leer un archivo descriptor línea por línea.Su objetivo es profundizar en el manejo de memoria dinámica, punteros y lectura de archivos mediante la función read().
+El proyecto get_next_line consiste en implementar una función en C que permite leer multiples archivos descriptores línea por línea. Su objetivo es profundizar en el manejo de memoria dinámica, punteros y lectura de archivos mediante la función read().
 
 DEFINICION:
 
-Cada llamada devuelve la siguiente línea del archivo, incluyendo el carácter \n si existe.Cuando se alcanza el final del archivo, devuelve la última línea (aunque no termine en \n).Si ocurre un error o no hay nada más que leer, devuelve NULL.
+Cada llamada sobre un archivo descriptor en concreto devuelve la siguiente línea del archivo, incluyendo el carácter \n si existe. Cuando se alcanza el final del archivo, devuelve la última línea (aunque no termine en \n). Si ocurre un error o no hay nada más que leer, devuelve NULL.
 
 PROTOTIPO:
 
@@ -15,7 +15,7 @@ PROTOTIPO:
 
 PARAMETROS:
 
-En C, a los ficheros se les identifica con un numero. No obstante, se reservan algunos para los ficheros estándar cuyos numeros por defecto son:
+En C, a los ficheros se les identifica con un número. No obstante, se reservan algunos para los ficheros estándar cuyos numeros por defecto son:
 
     -Entrada estándar:   STDIN_FILENO  0
     -Salida estándar:    STDOUT_FILENO 1
@@ -32,13 +32,13 @@ COMPILACION
 
 El proyecto debe compilarse con las banderas estándar de 42:
 
-cc -Wall -Wextra -Werror get_next_line.c get_next_line_utils.c get_next_line.h -D BUFFER_SIZE=42 -o gnl
+cc -Wall -Wextra -Werror get_next_line_bonus.c get_next_line_utils_bonus.c get_next_line_bonus.h -D BUFFER_SIZE=42 -o gnl
 
 EJECUCION
 
 Ejemplo de uso:
 
-	#include "get_next_line.h"
+	#include "get_next_line_bonus.h"
 	int main(void)
 	{
 		int fd = open("archivo.txt", O_RDONLY);
@@ -74,19 +74,19 @@ USO DE IA:
 └────────────┬────────────────┘
              │
              ▼
-┌──────────────────────────────┐
-│ ¿fd válido y BUFFER_SIZE > 0?│
-└───────┬───────────────┬──────┘
+┌───────────────────────────────┐
+│ ¿fd válido y BUFFER_SIZE >= 0?│
+└───────┬───────────────┬───────┘
         │Sí             │No
         ▼               ▼
 ┌─────────────┐     ┌─────────────┐
 │ Inicializar │     │   return    │
-│   buffer    │     │    NULL     │
+│   rest[fd]  │     │    NULL     │
 └────┬────────┘     └─────────────┘
      │
      ▼
 ┌──────────────────────────────┐
-│  ¿Hay '\n' en el buffer?     │
+│  ¿Hay '\n' en el rest[fd]?   │
 └────┬───────────────┬─────────┘
      │Sí             │No
      ▼               ▼

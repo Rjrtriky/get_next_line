@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonnus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rjuarez- <rjuarez-@student.42madrid.com>   #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-11-13 12:00:37 by rjuarez-          #+#    #+#             */
-/*   Updated: 2025-11-13 12:00:37 by rjuarez-         ###   ########.com      */
+/*   Created: 2025-12-14 12:58:57 by rjuarez-          #+#    #+#             */
+/*   Updated: 2025-12-14 12:58:57 by rjuarez-         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,35 @@ unsigned char	*ft_get_line(unsigned char **rest)
 	return (line);
 }
 
+/*FT_RETURN_LAST
+ * @def Handles the final return of the remaining buffer when no newline
+ *      character is found in the string.
+ *
+ * @param
+ *      {pointer to unsigned char} **rest - double pointer to the buffer
+ *      that stores the remaining content.
+ *
+ * @returns
+ *      OK - Returns the last line stored in *rest if it is not empty.
+ *      KO - Returns NULL if *rest is empty, freeing the memory.
+ * */
+unsigned char	*ft_return_last(unsigned char **rest)
+{
+	unsigned char	*line;
+
+	if (rest == NULL || *rest == NULL)
+		return (NULL);
+	if (**rest != '\0')
+		line = (*rest);
+	else
+	{
+		free(*rest);
+		line = NULL;
+	}
+	*rest = NULL;
+	return (line);
+}
+
 /*FT_READ_CONCAT
  * @def	Read from the file and concatenate what you read to an unsigned char
  *		pointer.
@@ -84,35 +113,6 @@ int	ft_read_concat(unsigned char **rest, int fd)
 	return ((int)rest_len + (int)buffer_len + 1);
 }
 
-/*FT_RETURN_LAST
- * @def Handles the final return of the remaining buffer when no newline
- *      character is found in the string.
- *
- * @param
- *      {pointer to unsigned char} **rest - double pointer to the buffer
- *      that stores the remaining content.
- *
- * @returns
- *      OK - Returns the last line stored in *rest if it is not empty.
- *      KO - Returns NULL if *rest is empty, freeing the memory.
- * */
-unsigned char	*ft_return_last(unsigned char **rest)
-{
-	unsigned char	*line;
-
-	if (rest == NULL || *rest == NULL)
-		return (NULL);
-	if (**rest != '\0')
-		line = (*rest);
-	else
-	{
-		free(*rest);
-		line = NULL;
-	}
-	*rest = NULL;
-	return (line);
-}
-
 /*GET_NEXT_LINE
  * @def  Calling your `get_next_line` function repeatedly (for example, using a
  *	loop) will allow you to read the contents of the file pointed to by the
@@ -134,29 +134,29 @@ unsigned char	*ft_return_last(unsigned char **rest)
  * */
 char	*get_next_line(int fd)
 {
-	static unsigned char	*rest;
+	static unsigned char	*rest[1024];
 	unsigned char			*line;
 	ssize_t					rest_len;
 
 	if ((fd < 0) || (BUFFER_SIZE <= 0) || (read(fd, 0, 0) < 0))
 	{
-		if (rest != NULL)
+		if (rest[fd] != NULL)
 		{
-			free(rest);
-			rest = NULL;
+			free(rest[fd]);
+			rest[fd] = NULL;
 		}
 		return (NULL);
 	}
-	if (rest == NULL)
-		rest = ft_calloc(1, 1);
+	if (rest[fd] == NULL)
+		rest[fd] = ft_calloc(1, 1);
 	rest_len = 1;
-	while ((rest_len > 0) && (ft_nstrchr((char *)rest, '\n') < 0))
-		rest_len = ft_read_concat(&rest, fd);
-	if (rest_len < 0 || rest == NULL)
+	while ((rest_len > 0) && (ft_nstrchr((char *)rest[fd], '\n') < 0))
+		rest_len = ft_read_concat(&rest[fd], fd);
+	if (rest_len < 0 || rest[fd] == NULL)
 		return (NULL);
-	if (ft_nstrchr((char *)rest, '\n') >= 0)
-		line = ft_get_line(&rest);
+	if (ft_nstrchr((char *)rest[fd], '\n') >= 0)
+		line = ft_get_line(&rest[fd]);
 	else
-		line = ft_return_last (&rest);
+		line = ft_return_last (&rest[fd]);
 	return ((char *)line);
 }

@@ -138,7 +138,7 @@ int	ft_read_concat(unsigned char **rest, int fd)
  *		OK - the line read up to '\n'
  *		KO - In case of failure or if the reading ends: NULL
  * */
-char	*get_next_line(int fd)
+char	*get_next_line_bonus(int fd)
 {
 	static unsigned char	*rest[1024];
 	unsigned char			*line;

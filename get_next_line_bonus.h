@@ -35,6 +35,6 @@ void			*ft_recalloc(unsigned char *old_ptr,
 unsigned char	*ft_get_line(unsigned char **rest);
 int				ft_read_concat(unsigned char **rest, int fd);
 unsigned char	*ft_return_last(unsigned char **rest);
-char			*get_next_line(int fd);
+char			*get_next_line_bonus(int fd);
 
 #endif

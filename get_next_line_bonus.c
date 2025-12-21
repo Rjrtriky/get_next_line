@@ -95,8 +95,8 @@ unsigned char	*ft_return_last(unsigned char **rest)
  * */
 int	ft_read_concat(unsigned char **rest, int fd)
 {
-	size_t	buffer_len;
-	size_t	rest_len;
+	int	buffer_len;
+	int	rest_len;
 
 	if (fd < 0)
 		return (-1);
@@ -106,9 +106,15 @@ int	ft_read_concat(unsigned char **rest, int fd)
 	*rest = ft_recalloc(*rest, rest_len + BUFFER_SIZE + 1);
 	if (*rest == NULL)
 		return (-1);
-	buffer_len = (size_t) read(fd, (*rest) + rest_len, BUFFER_SIZE);
-	if (buffer_len <= 0)
+	buffer_len = (int) read(fd, (*rest) + rest_len, BUFFER_SIZE);
+	if (buffer_len == 0)
 		return (buffer_len);
+	else if (buffer_len < 0)
+	{
+		free(*rest);
+		*rest = NULL;
+		return (-1);
+	}
 	(*rest)[rest_len + buffer_len] = '\0';
 	return ((int)rest_len + (int)buffer_len + 1);
 }
@@ -138,7 +144,7 @@ char	*get_next_line(int fd)
 	unsigned char			*line;
 	ssize_t					rest_len;
 
-	if ((fd < 0) || (BUFFER_SIZE <= 0) || (read(fd, 0, 0) < 0))
+	if ((fd < 0) || (BUFFER_SIZE <= 0))
 	{
 		if (rest[fd] != NULL)
 		{

@@ -51,37 +51,14 @@ unsigned char	*ft_get_line(unsigned char **rest)
 	return (line);
 }
 
-/*FT_READ_CONCAT
- * @def	Read from the file and concatenate what you read to an unsigned char
- *		pointer.
- *
- * @param
- *		{pointer to unsigned char} *des - 
- *		{integer number} fd - identifier descriptor of file to read.
- *
- * @returns
- *		OK - Returns the total number of characters and in the received
- *			parameter, the received value and the buffer read from the file.
- *		KO - -1
- * */
-int	ft_read_concat(unsigned char **rest, int fd)
+char	*ft_return_error(unsigned char **rest)
 {
-	size_t	buffer_len;
-	size_t	rest_len;
-
-	if (fd < 0)
-		return (-1);
-	if (*rest == NULL)
-		*rest = (unsigned char *) ft_calloc(1, 1);
-	rest_len = ft_strlen((char *) *rest);
-	*rest = ft_recalloc(*rest, rest_len + BUFFER_SIZE + 1);
-	if (*rest == NULL)
-		return (-1);
-	buffer_len = (size_t) read(fd, (*rest) + rest_len, BUFFER_SIZE);
-	if (buffer_len <= 0)
-		return (buffer_len);
-	(*rest)[rest_len + buffer_len] = '\0';
-	return ((int)rest_len + (int)buffer_len + 1);
+	if (rest != NULL && *rest != NULL)
+	{
+		free(*rest);
+		*rest = NULL;
+	}
+	return (NULL);
 }
 
 /*FT_RETURN_LAST
@@ -113,6 +90,45 @@ unsigned char	*ft_return_last(unsigned char **rest)
 	return (line);
 }
 
+/*FT_READ_CONCAT
+ * @def	Read from the file and concatenate what you read to an unsigned char
+ *		pointer.
+ *
+ * @param
+ *		{pointer to unsigned char} *des - 
+ *		{integer number} fd - identifier descriptor of file to read.
+ *
+ * @returns
+ *		OK - Returns the total number of characters and in the received
+ *			parameter, the received value and the buffer read from the file.
+ *		KO - -1
+ * */
+int	ft_read_concat(unsigned char **rest, int fd)
+{
+	int	buffer_len;
+	int	rest_len;
+
+	if (fd < 0)
+		return (-1);
+	if (*rest == NULL)
+		*rest = (unsigned char *) ft_calloc(1, 1);
+	rest_len = ft_strlen((char *) *rest);
+	*rest = ft_recalloc(*rest, rest_len + BUFFER_SIZE + 1);
+	if (*rest == NULL)
+		return (-1);
+	buffer_len = (int) read(fd, (*rest) + rest_len, BUFFER_SIZE);
+	if (buffer_len == 0)
+		return (buffer_len);
+	else if (buffer_len < 0)
+	{
+		free(*rest);
+		*rest = NULL;
+		return (-1);
+	}
+	(*rest)[rest_len + buffer_len] = '\0';
+	return ((int)rest_len + (int)buffer_len + 1);
+}
+
 /*GET_NEXT_LINE
  * @def  Calling your `get_next_line` function repeatedly (for example, using a
  *	loop) will allow you to read the contents of the file pointed to by the
@@ -138,7 +154,7 @@ char	*get_next_line(int fd)
 	unsigned char			*line;
 	ssize_t					rest_len;
 
-	if ((fd < 0) || (BUFFER_SIZE <= 0) || (read(fd, 0, 0) < 0))
+	if ((fd < 0) || (BUFFER_SIZE <= 0))
 	{
 		if (rest != NULL)
 		{
@@ -153,7 +169,7 @@ char	*get_next_line(int fd)
 	while ((rest_len > 0) && (ft_nstrchr((char *)rest, '\n') < 0))
 		rest_len = ft_read_concat(&rest, fd);
 	if (rest_len < 0 || rest == NULL)
-		return (NULL);
+		return (ft_return_error(&rest));
 	if (ft_nstrchr((char *)rest, '\n') >= 0)
 		line = ft_get_line(&rest);
 	else
